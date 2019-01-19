@@ -8,11 +8,7 @@ font = cv2.FONT_HERSHEY_SIMPLEX
 face_cascade = cv2.CascadeClassifier('./harr_cascades/haarcascade_frontalface_default.xml')
 face_cascade_alt = cv2.CascadeClassifier('./harr_cascades/haarcascade_frontalface_alt.xml')
 face_cascade_alt2 = cv2.CascadeClassifier('./harr_cascades/haarcascade_frontalface_alt2.xml')
-face_profile = cv2.CascadeClassifier('./harr_cascades/haarcascade_profileface.xml')
-face_cascade_smile = cv2.CascadeClassifier('./harr_cascades/haarcascade_smile.xml')
 eye_cascade = cv2.CascadeClassifier('./harr_cascades/haarcascade_eye.xml')
-upperbody_cascade = cv2.CascadeClassifier('./harr_cascades/haarcascade_upperbody.xml')
-lowerbody_cascade = cv2.CascadeClassifier('./harr_cascades/haarcascade_lowerbody.xml')
 
 imgTemplate = cv2.imread('./img/car-suv.jpg', 0)
 w, h = imgTemplate.shape[::-1]
@@ -51,7 +47,7 @@ def detectCarType(img):
     threshold = 0.8
     loc = np.where(res >= threshold)
     for pt in zip(*loc[::-1]):
-        cv2.rectangle(img, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 1)
+        cv2.rectangle(img, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
 
 
 def increaseBrightness(img, value=30):

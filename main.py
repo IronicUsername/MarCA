@@ -66,18 +66,18 @@ def increaseBrightness(img, value=30):
 def main():
     last_time = time.time()
     while(True):
-        # observingWindow = findWindow('faces - Google Search - Mozilla Firefox')
-        observingWindow = findWindow(
-            'UAI_DE - VS10134.AUTOBAHNINKASSO.DE - Remotedesktopverbindung')
+        observingWindow = findWindow('faces - Google Search - Mozilla Firefox')
+        # observingWindow = findWindow(
+        #     'UAI_DE - VS10134.AUTOBAHNINKASSO.DE - Remotedesktopverbindung')
         screen = np.array(ImageGrab.grab(bbox=(observingWindow)))
-        # screen = increaseBrightness(screen, value=50)
-        detectCarType(screen)
-        detectFace(screen)
-        print('Loop took {} seconds'.format(time.time()-last_time))
 
+        # detectCarType(screen)
+        # detectFace(screen)
+
+        print('Loop took {} seconds'.format(time.time()-last_time))
         cv2.imshow('screen', cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))
         last_time = time.time()
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        if cv2.waitKey(25) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             break
 

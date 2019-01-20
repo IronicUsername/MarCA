@@ -10,7 +10,7 @@ face_cascade_alt = cv2.CascadeClassifier('./harr_cascades/haarcascade_frontalfac
 face_cascade_alt2 = cv2.CascadeClassifier('./harr_cascades/haarcascade_frontalface_alt2.xml')
 eye_cascade = cv2.CascadeClassifier('./harr_cascades/haarcascade_eye.xml')
 
-imgTemplate = cv2.imread('./img/car-suv.jpg', 0)
+imgTemplate = cv2.imread('./img/car-suv.png', 0)
 w, h = imgTemplate.shape[::-1]
 
 
@@ -47,7 +47,7 @@ def detectCarType(img):
     threshold = 0.8
     loc = np.where(res >= threshold)
     for pt in zip(*loc[::-1]):
-        cv2.rectangle(img, pt, (pt[0] + w, pt[1] + h), (0, 0, 255), 2)
+        cv2.rectangle(img, pt, (pt[0] + w, pt[1] + h), (255, 255, 0), 2)
 
 
 def increaseBrightness(img, value=30):
@@ -66,9 +66,9 @@ def increaseBrightness(img, value=30):
 def main():
     last_time = time.time()
     while(True):
-        observingWindow = findWindow('faces - Google Search - Mozilla Firefox')
-        # observingWindow = findWindow(
-        #     'UAI_DE - VS10134.AUTOBAHNINKASSO.DE - Remotedesktopverbindung')
+        # observingWindow = findWindow('faces - Google Search - Mozilla Firefox')
+        observingWindow = findWindow(
+            'UAI_DE - VS10134.AUTOBAHNINKASSO.DE - Remotedesktopverbindung')
         screen = np.array(ImageGrab.grab(bbox=(observingWindow)))
         # screen = increaseBrightness(screen, value=50)
         detectCarType(screen)
@@ -77,51 +77,10 @@ def main():
 
         cv2.imshow('screen', cv2.cvtColor(screen, cv2.COLOR_BGR2RGB))
         last_time = time.time()
-        if cv2.waitKey(25) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
             break
 
 
 if __name__ == '__main__':
     main()
-
-'''
-cap = cv2.VideoCapture(0)
-while(True):
-    ret, img = cap.read()
-    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    masked_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-    masked_img = cv2.Canny(masked_img, threshold1=200, threshold2=300)
-    masked_img = cv2.GaussianBlur(masked_img, (3, 3), 0)
-    vertices = np.array([[0, 1920], [0, 0], [1080, 0], [1920, 1080]], np.int32)
-    masked_img = roi(masked_img, [vertices])
-
-    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-    profiles = face_profile.detectMultiScale(gray, 1.3, 5)
-
-    for (x, y, w, h) in faces:
-        cv2.rectangle(img, (x, y), (x+w, y+h), (0, 0, 255), 2)  # rot
-        cv2.putText(img, 'Face', (x-30, y-5), font, 0.5, (0, 0, 255), 1, cv2.LINE_AA)
-        roi_gray = gray[y: y+h, x: x+w]
-        roi_color = img[y: y+h, x: x+w]
-        eyes = eye_cascade.detectMultiScale(roi_gray)
-        for (ex, ey, ew, eh) in eyes:
-            cv2.rectangle(roi_color, (ex, ey), (ex+ew-5, ey+eh-5), (0, 255, 0), 2)  # gruen
-            cv2.putText(roi_color, 'Eye', (ex, ey-5), font, 0.5, (0, 255, 0), 1, cv2.LINE_AA)
-
-    for (xp, yp, wp, hp) in profiles:
-        cv2.rectangle(img, (xp, yp), (xp+wp, yp+hp), (255, 0, 0), 2)  # blau
-
-    cv2.imshow('img', img)
-    cv2.imshow('cv', masked_img)
-    if cv2.waitKey(25) & 0xFF == ord('q'):
-        cv2.destroyAllWindows()
-        break
-
-    for (xx, yy, ww, hh) in profiles:
-        cv2.rectangle(img, (xx, yy), (xx+ww, yy+hh), (255, 0, 0), 2)
-        roi_gray = gray[yy:yy+hh, xx:xx+ww]
-        roi_color = img[yy:yy+hh, xx:xx+ww]
-        eyes = eye_cascade.detectMultiScale(roi_gray)
-'''
